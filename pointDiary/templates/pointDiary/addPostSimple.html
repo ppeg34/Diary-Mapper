@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<ul>
+{% for entry in diaryList %}
+{{ entry.title }}<br />
+{{ entry.text }}<br />
+{{ entry.pub_date }}<br />
+{{ entry.loc }}<br /><br />
+{% endfor %}
+
+
+<h1>Add a Post</h1>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="{% url 'pointDiary:addPostSimple' %}" method="post">
+{% csrf_token %}
+    Title<input type="text" name="title" /><br />
+    Content<input type="text" name="content" /><br />
+    Coords<input type="text" name="coordinates" /><br />
+    <input type="submit" value="Vote" />
+</form>
+
+
+
+</ul>
+</body>
+</html>

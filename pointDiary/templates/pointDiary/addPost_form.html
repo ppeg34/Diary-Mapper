@@ -1,0 +1,12 @@
+{% extends addPost.html %}
+
+{% block content %}
+<form action="{% url 'pointDiary:post' %}" method="post">
+  {% csrf_token %}
+  Title <input type="text" name="title" /><br />" +
+  Content <input type="text" name="content" /><br />" +
+  <input type="hidden" name="coordinates" value="POINT(" + e.latlng.lng + " " + e.latlng.lat + ")" />
+  <input type="submit" value="Post!" />" +
+</form>
+{% endblock %}
+

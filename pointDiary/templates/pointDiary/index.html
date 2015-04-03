@@ -1,0 +1,41 @@
+{% extends "pointDiary/base.html" %}
+
+{% block content %}
+
+
+
+<div id="fullMap">
+  <div id="map">map</div>
+</div>
+
+<div id="message1">
+  <div class="alert alert-success">
+      <a href="#" class="close" data-dismiss="alert"><span class="glyphicon glyphicon-remove"></span></a>
+      <h4 id="bottomAlert">Welcome to DiaryMapper.  Document whatever you want, wherever you want!<br />
+      New around here? <a href="{% url 'registration_register' %}">Register</a> and start posting immediately.</h4>
+  </div>
+</div>
+
+<script>
+  var map = L.map('map').setView([{{ diaryList.0.loc.y }}, {{ diaryList.0.loc.x }}], 7);
+        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
+            maxZoom: 18
+            }).addTo(map);
+
+  var markerList = [];
+
+  {% for entry in diaryList %}
+    markerList.push([{{ entry.loc.y }},{{ entry.loc.x }}]);
+    var marker = L.marker([{{ entry.loc.y }}, {{ entry.loc.x }}]).addTo(map)
+        .bindPopup("<b>{{ entry.title|escapejs }}</b><br>{{ entry.text|linebreaks|escapejs }}");
+  {% endfor %}
+  map.fitBounds(markerList);
+
+
+
+</script>
+
+{% endblock %}
+
+

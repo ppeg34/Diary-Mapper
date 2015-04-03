@@ -1,0 +1,114 @@
+
+html body #map {
+  margin: 0;
+  height: 100%;
+  width: 100%;
+}
+
+#message1 {
+  position: absolute;
+  bottom: 10px;
+  z-index: 10;
+  width: 100%;
+  text-align: center;
+}
+
+.alert {
+  display: inline-block;
+  max-width: 80%;
+}
+#wholepage {
+  height: 100%;
+  width: 100%;
+  text-align: center;
+}
+#centerpage {
+  margin-top: 200px;
+  display: inline-block;
+  padding: 20px;
+  border: 2px solid;
+  border-color: #777;
+  border-radius: 15px;
+}
+
+#bottomAlert {
+  margin: 0;
+}
+
+#fullMap {
+  height: calc(100% - 50px);
+  width: 100%;
+  position: absolute;
+  top: 50px;
+}
+
+/* Landscape */
+@media screen and (orientation:landscape) {
+
+  #mapContainer {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    height: calc(100% - 50px);
+    width: 80%;
+  }
+
+  #addEntry {
+    top: 50px;
+    position: absolute;
+    left: 0;
+    height: calc(100% - 50px);
+    width: 20%;
+    border-right: solid 1px;
+    background-color: #f8f8f8;
+    overflow: auto;
+    color: #777;
+  }
+}
+
+/* Portrait */
+@media screen and (orientation:portrait) {
+
+  #mapContainer {
+    top: 50px;
+    position: absolute;
+    height: 60%;
+    width: 100%;
+  }
+
+  #addEntry {
+    position: absolute;
+    bottom: 0;
+    height: calc(40% - 50px);
+    width: 100%;
+    background-color #f8f8f8;
+    overflow: scroll;
+    border-top: 1px solid #e7e7e7;
+    color: #777;
+  }
+}
+
+#title, #content, #lat, #lng {
+  color: black;
+}
+
+#submit {
+  width: 130px;
+}
+
+#subParent {
+  text-align: center;
+}
+#head1 {
+  text-align: center;
+}
+
+#container {
+  padding: 5%;
+}
+
+#content, #title, #lat, #lng {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}

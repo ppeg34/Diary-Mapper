@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Map Diary- Add Post</title>
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'pointDiary/style.css' %}" />
+<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+
+</head>
+<body>
+<div id="map"></div>
+<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+<script>
+  var map = L.map('map').setView([{{ diaryList.0.loc.y }}, {{ diaryList.0.loc.x }}], 7);
+  mapLink = 
+            '<a href="http://openstreetmap.org">OpenStreetMap</a>';
+        L.tileLayer(
+            'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; ' + mapLink + ' Contributors',
+            maxZoom: 18,
+            }).addTo(map);
+
+  {% for entry in diaryList %}
+    var marker = L.marker([{{ entry.loc.y }}, {{ entry.loc.x }}]).addTo(map);
+    marker.bindPopup("<b>{{ entry.title }}</b><br>{{ entry.text }}")
+  {% endfor %}
+
+map.on('click', onMapCLick);
+
+funtion onMapClick(e) {
+
+    var marker = L.marker(e.latlng).bindPopup(
+        <form action="{% url 'pointDiary:addPost' %} method="post"">
+            {% csrf_token %}
+            <input type="hidden" name="coordinates" />
+            <input type="text" name="title" /><br />
+            <input type="text" name="content" /><br />
+            <input type="submit" value="Post" /><br />
+        
+        </form>
+    ).openPopup();
+
+</script>
+</div>
+</body>
+</html>

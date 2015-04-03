@@ -1,0 +1,74 @@
+{% extends "pointDiary/base.html" %}
+
+
+
+
+{% block content %}
+  <div id=mapContainer>
+    <div id="map">map</div>
+  </div>
+
+  <div id="addEntry">
+    <div id="container">
+    <h3 id="head1">Diary Entry</h3>
+    <form role="form" action="{% url 'pointDiary:post' %}" method="post">
+        <div class="form-group">
+        {% csrf_token %}
+        <label for="title">Title</label>
+          <input type="text" class="form-control" id="title" name="title" /><br />
+          <label for="Content">Content</label>
+          <textarea id="Content" class="form-control" name="content" cols="60" rows="7"></textarea><br />
+          <label for="lat">Latitude (Click map to auto-populate)</label>
+          <input type="text" id="lat" class="form-control" name="lat" value="" /><br />
+          <label for="lng">Longitude (Click map to auto-populate)</label>
+          <input type="text" id="lng" class="form-control" name="lng" value="" /><br />
+          <br /><div id="subParent"><input type="submit" class="btn btn-default" id="submit" value="Add Post" /></div>
+        </div>
+    </form>
+    </div>
+  </div>
+
+<script>
+
+{% if diaryList %}
+  var map = L.map('map').setView([{{ diaryList.0.loc.y }}, {{ diaryList.0.loc.x }}], 7);
+        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
+            maxZoom: 18
+            }).addTo(map);
+
+  var markerList = [];
+
+  {% for entry in diaryList %}
+    markerList.push([{{ entry.loc.y }},{{ entry.loc.x }}]);
+    var marker = L.marker([{{ entry.loc.y }}, {{ entry.loc.x }}]).addTo(map)
+        .bindPopup("<b>{{ entry.title|escapejs }}</b><br>{{ entry.text|linebreaks|escapejs }}<form action='{% url "pointDiary:deletePost" %}' method='post'>{% csrf_token %}<input type='hidden' id='id' name='id' value='{{ entry.id }}' /><input type='submit' id='delete' name='delete' value='Delete Post' /></form>");
+  {% endfor %}
+  map.fitBounds(markerList);
+
+{% else %}
+   var map = L.map('map').setView([35.46067, 376.875], 3);
+        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
+            maxZoom: 18
+            }).addTo(map);
+{% endif %}
+ 
+
+     var popup = L.popup();
+
+     function onMapClick(e) {
+       var popupcontent = "Add a Diary Post!";
+       popup  
+	    .setLatLng(e.latlng)
+	    .setContent(popupcontent)
+            .openOn(map);
+       document.getElementById("lat").value = e.latlng.lat;
+       document.getElementById("lng").value = e.latlng.lng;
+      }
+
+map.on('click', onMapClick);
+
+</script>
+
+{% endblock %}
